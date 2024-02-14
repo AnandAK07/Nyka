@@ -27,7 +27,7 @@ export const Login = () => {
   }
 
   if (isAuth) {
-    return navigate('/');
+    return navigate('/dashboard');
   }
 
   return (

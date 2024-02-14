@@ -1,0 +1,14 @@
+.analytics-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .gender-chart,
+  .category-chart {
+    width: 100px; /* Adjust width as needed */
+    height: 100px; /* Adjust height as needed */
+    margin-bottom: 20px;
+  }
+  
+  

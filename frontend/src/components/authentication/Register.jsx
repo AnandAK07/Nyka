@@ -29,13 +29,14 @@ export const Register = () => {
       });
       setData(res.data)
       console.log(res.data)
+      navigate('/login')
     } catch (error) {
       console.log(error)
     }
   }
 
 
-  if (data === 'Register Successfull') {
+  if (data ==='Register Successfull') {
     return navigate('/login')
   }
 
