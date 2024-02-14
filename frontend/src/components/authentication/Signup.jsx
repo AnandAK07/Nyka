@@ -2,8 +2,9 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
+
 export const Signup = () => {
-  const apiUrl = "https://e-commerce-api-5yix.onrender.com";
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [data, setData] = useState('');
   const [form, setForm] = useState({
     name: '',
@@ -23,7 +24,7 @@ export const Signup = () => {
     try {
       const res = await axios({
         method: 'post',
-        url: `${apiUrl}/users/signup`,
+        url: `${apiUrl}/register`,
         data: form
       });
       setData(res.data)
