@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
 
-export const Signup = () => {
+export const Register = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [data, setData] = useState('');
   const [form, setForm] = useState({
@@ -24,7 +24,7 @@ export const Signup = () => {
     try {
       const res = await axios({
         method: 'post',
-        url: `${apiUrl}/register`,
+        url: `${apiUrl}/api/register`,
         data: form
       });
       setData(res.data)
@@ -35,7 +35,7 @@ export const Signup = () => {
   }
 
 
-  if (data == 'Signup successfull') {
+  if (data === 'Register Successfull') {
     return navigate('/login')
   }
 

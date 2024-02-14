@@ -11,7 +11,7 @@ export const Login = () => {
     password: ''
   })
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { token, isAuth, loading, error, success } = useSelector((store) => store.authReducer)
 
   const loggedtoken = localStorage.getItem('e-token');
@@ -22,13 +22,14 @@ export const Login = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(form)
     dispatch(login(form))
   }
 
   if (isAuth) {
-    navigate('/')
+    return navigate('/');
   }
-  
+
   return (
     <div style={{ background: '#FFFFFF', border: '1px solid black', width: '30%', textAlign: 'center', marginLeft: '35%', marginTop: '5%' }} >
       <div >
