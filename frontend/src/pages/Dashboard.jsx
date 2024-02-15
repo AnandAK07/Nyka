@@ -1,3 +1,6 @@
+
+
+
 import React, { useEffect, useState } from 'react'
 import './Dashboard.css'
 import Dashboardimg from '../assets/Dashboardimg.png';
@@ -10,23 +13,37 @@ import axios from 'axios'
 import { getAllProducts } from '../redux/productReducer/action';
 import { Link, useNavigate } from 'react-router-dom';
 
+
+// const getUrl = (modifiedUrl, search, filtering, sortingOrder) => {
+//     if (search) {
+//         modifiedUrl += `?q=${search}`;
+//     }
+//     if (filtering) {
+//         modifiedUrl += `?category=${filtering}`; // Use '&' to add additional query parameters
+//     }
+//     if (sortingOrder) {
+//         modifiedUrl += `&_sort=price&_order=${sortingOrder}`;
+//     }
+//     return modifiedUrl;
+// };
+
 export const Dashboard = () => {
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterGender, setFilterGender] = useState('');
+    const [filterCategory, setFilterCategory] = useState('');
+    const [sortOrder, setSortOrder] = useState('asc');
     const [currentPage, setCurrentPage] = useState(1);
-    const limit = 4;
-    const [search, setSearch] = useState("");
-    const [filtering, setFiltering] = useState("");
-    const [sortingOrder, setSortingOrder] = useState("");
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const [productsPerPage] = useState(10);
 
-
-    const { product, loading, success, error } = useSelector((store) => store.productReducer)
-    const dispatch = useDispatch()
-
+    // const { product, loading, success, error } = useSelector((store) => store.productReducer);
+    // const dispatch = useDispatch();
 
     const navigate = useNavigate();
+
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('e-token');
         return navigate('/login');
     };
 
@@ -34,29 +51,57 @@ export const Dashboard = () => {
         return navigate('/add-product');
     }
 
+    const getData = async () => {
+        try {
+            let url = `${process.env.REACT_APP_API_URL}/api/products`;
+            // const url = await getUrl(modifiedUrl, search, filtering, sortingOrder);
+            // const { data } = dispatch(getAllProducts(url));
+            // console.log(data);
+            // dispatch({ type: GET_DATA_LOADING })
+            const token = localStorage.getItem('e-token')
+            const data = await axios({
+                method: 'get',
+                url: url,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            // dispatch({ type: GET_DATA_SUCCESS, payload: data.data })
+            // return data.data;
+            setProducts(data.data)
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    const getUrl = (apiUrl, search, filtering, sortingOrder) => {
-        if (search) {
-            apiUrl = apiUrl + `?q=${search}`
+
+    const filteredProducts = products.filter(product => {
+        const genderMatch = filterGender === '' || product.gender === filterGender;
+        const categoryMatch = filterCategory === '' || product.category === filterCategory;
+        const searchTermMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+        return genderMatch && categoryMatch && searchTermMatch;
+    });
+
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortOrder === 'asc') {
+            return a.price - b.price;
+        } else {
+            return b.price - a.price;
         }
-        if (filtering) {
-            apiUrl = apiUrl + `?category=${filtering}`
-        }
-        if (sortingOrder) {
-            apiUrl = apiUrl + `?_sort=price&_order=${sortingOrder}`
-        }
-        return apiUrl;
-    }
-    console.log(product, 'product')
-    useEffect(() => {
-        getAllProducts(dispatch)
-    }, [])
+    });
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
     // useEffect(() => {
     //     getData(currentPage, search, filtering, sortingOrder);
-    //     // getData(data,setData,loading,setLoading,error,setError);
-    // }, [currentPage, search, filtering, sortingOrder]);
-
+    // }, [currentPage, search, filtering, sortingOrder, dispatch]);
+    useEffect(() => {
+        getData();
+    }, []);
 
     return (
         <div style={{
@@ -109,19 +154,19 @@ export const Dashboard = () => {
 
                 <div style={{ display: 'flex', marginTop: '57.9px' }}>
                     <div>
-                        <select name="Filter By Gender" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '51.8px', marginLeft: '61px' }}>
+                        <select value={filterGender} onChange={e => setFilterGender(e.target.value)} name="Filter By Gender" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '51.8px', marginLeft: '61px' }}>
                             <option value="placeholder" style={{ display: "none" }}>Filter By Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
-                        <select name="Filter By Category" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '43px', marginLeft: '60.8px' }}>
+                        <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} name="Filter By Category" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '43px', marginLeft: '60.8px' }}>
                             <option value="placeholder" style={{ display: "none" }}>Filter By Category</option>
                             <option value="makeup">Makeup</option>
                             <option value="skincare">Skincare</option>
                             <option value="haircare">Haircare</option>
                         </select>
 
-                        <select name="Sort By Price" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '56.4px', marginLeft: '60.8px' }}>
+                        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} name="Sort By Price" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '56.4px', marginLeft: '60.8px' }}>
                             <option value="placeholder" style={{ display: "none" }}>Sort By Price</option>
                             <option value="ascending">Ascending</option>
                             <option value="descending">Descending</option>
@@ -136,8 +181,8 @@ export const Dashboard = () => {
                     <div style={{ width: '1152px', height: '64px', border: '1px solid green', marginTop: '94px', marginLeft: '32px' }}>
 
                     </div>
-                    {product?.map((item, index) => {
-                        return <div style={{ display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginLeft: '32px' }}>
+                    {currentProducts?.map((item, index) => {
+                        return <div key={index} style={{ display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginLeft: '32px' }}>
                             <img src={item.picture} alt="" style={{ width: '44px', height: '44px', marginTop: '10px', marginLeft: '32px' }} />
                             <p style={{ width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{`Product ${index + 1}`}</p>
                             <p>{item.name}</p>

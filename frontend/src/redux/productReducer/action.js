@@ -15,19 +15,19 @@ export const getProductFailure = () => {
     return { type: GET_DATA_FAILURE }
 }
 
-export const getAllProducts = async (dispatch) => {
+export const getAllProducts = (url) => async (dispatch) => {
     try {
         dispatch({ type: GET_DATA_LOADING })
         const token = localStorage.getItem('e-token')
-        console.log(token)
         const data = await axios({
             method: 'get',
-            url: `${apiUrl}/api/products`,
+            url: url,
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
         dispatch({ type: GET_DATA_SUCCESS, payload: data.data })
+        return data.data;
     } catch (error) {
         console.log(error)
         dispatch({ type: GET_DATA_FAILURE })

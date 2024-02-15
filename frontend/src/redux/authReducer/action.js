@@ -13,6 +13,7 @@ export const login = (userDetails) => async (dispatch) => {
             data: userDetails
         });
         const token = res?.data.token
+        // console.log(token)
         if (token) {
             localStorage.setItem("e-token", token)
         }
