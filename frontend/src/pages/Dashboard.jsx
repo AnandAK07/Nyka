@@ -182,14 +182,14 @@ export const Dashboard = () => {
 
                     </div>
                     {currentProducts?.map((item, index) => {
-                        return <div key={index} style={{ display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginLeft: '32px' }}>
+                        return <div key={index} style={{  display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginLeft: '32px' }}>
                             <img src={item.picture} alt="" style={{ width: '44px', height: '44px', marginTop: '10px', marginLeft: '32px' }} />
-                            <p style={{ width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{`Product ${index + 1}`}</p>
-                            <p>{item.name}</p>
-                            <p>{item.category}</p>
-                            <p>{item.price}</p>
-                            <p>{item.gender}</p>
-                            <p>{item.description}</p>
+                            <p className='inter-400' style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{`Product ${index + 1}`}</p>
+                            {/* <p style={{ width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.name}</p> */}
+                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.gender}</p>
+                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.category}</p>
+                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.price}</p>
+                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.description}</p>
                             <div style={{ border: '1px solid black', }}></div>
                         </div>
                     })}
