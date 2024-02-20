@@ -22,7 +22,7 @@ export const AllRoutes = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-            <Route path="/edit" element={<EditProduct />} />
+            <Route path="/edit/:id" element={<EditProduct />} />
             <Route
                 path="/add-product"
                 element={<AddProduct onClose={handleCloseModal} />}

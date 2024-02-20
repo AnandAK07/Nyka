@@ -8,6 +8,9 @@ import Analyticsimg from '../assets/Analytics.png';
 import settingimg from '../assets/setting-2.png'
 import searchimg from '../assets/search-normal.png'
 import notification from '../assets/notification-bing.png'
+import editImg from '../assets/edit-3.png'
+import moreImg from '../assets/more-horizontal.png'
+import trashImg from '../assets/trash-2.png'
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
 import { getAllProducts } from '../redux/productReducer/action';
@@ -90,6 +93,31 @@ export const Dashboard = () => {
         }
     });
 
+    const handleEdit = (id) => {
+        console.log('edit/', id)
+        return navigate(`/edit/${id}`)
+
+
+    }
+
+    const handleDelete = async (id) => {
+        console.log('edit', id)
+
+        const token = localStorage.getItem('e-token')
+        const res = await axios({
+            method: 'delete',
+            url: `${process.env.REACT_APP_API_URL}/api/products/${id}`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        getData();
+    }
+    const handleDetails = () => {
+        console.log('edit')
+
+
+    }
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -135,7 +163,7 @@ export const Dashboard = () => {
             </div>
 
             <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '1129px', height: '52px', border: '1px solid pink', marginTop: '56.1px', marginLeft: '41px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '1129px', border: '1px solid pink', marginTop: '56.1px', marginLeft: '41px' }}>
                     <div style={{ display: 'flex', background: '#FFFFFF', width: '655px', height: '52px', border: '1px solid green' }}>
                         <img src={searchimg} alt="" style={{ width: '24px', height: '24px', marginTop: '13.9px', marginLeft: '20px' }} />
                         <input style={{ width: '57px', height: '24px', marginTop: '13.9px', marginLeft: '16px', border: 'none' }} placeholder='Search' />
@@ -144,7 +172,6 @@ export const Dashboard = () => {
                     <div style={{ display: 'flex', gap: '20px', background: '#FFFFFF', width: '124px', height: '52px', border: '1px solid black' }}>
                         <div style={{ width: '52px', height: '52px' }}>
                             <img src={notification} alt="" style={{ width: '24px', height: '24px', marginTop: '14px', marginLeft: '14px' }} />
-
                         </div>
                         <div style={{ width: '52px', height: '52px' }}>
                             <img src={'https://cdn-icons-png.flaticon.com/512/9131/9131529.png'} alt="" style={{ width: '24px', height: '24px', marginTop: '14px', marginLeft: '14px' }} />
@@ -152,7 +179,7 @@ export const Dashboard = () => {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', marginTop: '57.9px' }}>
+                <div style={{ display: 'flex', marginTop: '33.9px' }}>
                     <div>
                         <select value={filterGender} onChange={e => setFilterGender(e.target.value)} name="Filter By Gender" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '51.8px', marginLeft: '61px' }}>
                             <option value="placeholder" style={{ display: "none" }}>Filter By Gender</option>
@@ -167,30 +194,36 @@ export const Dashboard = () => {
                         </select>
 
                         <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} name="Sort By Price" id="gender-filter" style={{ background: '#FFFFFF', border: '1px solid black', width: '229.2px', height: '56.4px', marginLeft: '60.8px' }}>
-                            <option value="placeholder" style={{ display: "none" }}>Sort By Price</option>
-                            <option value="ascending">Ascending</option>
-                            <option value="descending">Descending</option>
+                            <option value="placeholder" style={{ display: "none", height: '52px' }}>Sort By Price</option>
+                            <option value="asc" style={{ height: '520px', padding: '264px', background: 'red', marginTop: '200px' }}>Ascending</option>
+                            <option value="desc" style={{ height: '52px' }}>Descending</option>
                         </select>
                     </div>
-                    <button onClick={handleAddProduct} style={{ width: '248px', height: '58px', marginLeft: '102.8px', marginTop: '141.9px', background: '#0E1866', color: '#FFFFFF' }}>
-                        ADD PRODUCT
-                    </button>
                 </div>
+                <button onClick={handleAddProduct} style={{ width: '248px', height: '58px', marginLeft: '973px', marginTop: '51.6px', background: '#0E1866', color: '#FFFFFF' }}>
+                    ADD PRODUCT
+                </button>
 
-                <div style={{ background: '#FFFFFF', width: '1216px', height: '830px', border: '1px solid blue', marginTop: '73.6px', marginLeft: '33px' }}>
+                <div style={{ background: '#FFFFFF', width: '1216px', height: '830px', border: '1px solid blue', marginTop: '46px', marginLeft: '33px' }}>
                     <div style={{ width: '1152px', height: '64px', border: '1px solid green', marginTop: '94px', marginLeft: '32px' }}>
 
                     </div>
                     {currentProducts?.map((item, index) => {
-                        return <div key={index} style={{  display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginLeft: '32px' }}>
+                        return <div key={index} style={{ display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginLeft: '32px' }}>
                             <img src={item.picture} alt="" style={{ width: '44px', height: '44px', marginTop: '10px', marginLeft: '32px' }} />
                             <p className='inter-400' style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{`Product ${index + 1}`}</p>
                             {/* <p style={{ width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.name}</p> */}
-                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.gender}</p>
-                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.category}</p>
-                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.price}</p>
-                            <p style={{ color: '#555F7E', width: '63px', height: '22px', marginTop: '21px', marginLeft: '16px' }}>{item.description}</p>
-                            <div style={{ border: '1px solid black', }}></div>
+                            <p style={{ color: '#555F7E', width: '48px', height: '22px', marginTop: '21px', marginLeft: '183px' }}>{item.gender}</p>
+                            <p style={{ color: '#555F7E', width: '57px', height: '22px', marginTop: '21px', marginLeft: '85px' }}>{item.category}</p>
+                            <p style={{ color: '#555F7E', width: '56px', height: '22px', marginTop: '21px', marginLeft: '106px' }}>${item.price}</p>
+                            {/* <div style={{ display: 'flex', flexDirection: 'row', width: '366px' }}>
+                            </div> */}
+                            <p style={{ border: '1px solid black', color: '#555F7E', width: '366px', height: '61px', marginLeft: '77px', marginTop: '21px' }}>{item.description}</p>
+                            <div style={{ width: '80px', height: '16px', border: '1px solid black', marginLeft: '-96px', marginTop: '24px', gap: '16px' }}>
+                                <img src={editImg} alt="" style={{ width: '16px' }} onClick={() => handleEdit(item._id)} />
+                                <img src={trashImg} alt="" style={{ width: '16px' }} onClick={() => handleDelete(item._id)} />
+                                <img src={moreImg} alt="" style={{ width: '16px' }} onClick={() => handleDetails(item._id)} />
+                            </div>
                         </div>
                     })}
                 </div>
