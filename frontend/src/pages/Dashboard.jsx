@@ -11,6 +11,7 @@ import notification from '../assets/notification-bing.png'
 import editImg from '../assets/edit-3.png'
 import moreImg from '../assets/more-horizontal.png'
 import trashImg from '../assets/trash-2.png'
+import sortImg from '../assets/Sort.png'
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
 import { getAllProducts } from '../redux/productReducer/action';
@@ -205,8 +206,43 @@ export const Dashboard = () => {
                 </button>
 
                 <div style={{ background: '#FFFFFF', width: '1216px', height: '830px', border: '1px solid blue', marginTop: '46px', marginLeft: '33px' }}>
-                    <div style={{ width: '1152px', height: '64px', border: '1px solid green', marginTop: '94px', marginLeft: '32px' }}>
+                    <div style={{ display: 'flex', marginTop: '32px', marginLeft: '32px' }}>
+                        <p className='inter-500' style={{ width: '131px', height: '30px'}}>Latest Orders</p>
+                        <p style={{ marginLeft: '958px', marginTop: '4px' }}>More</p>
+                    </div>
 
+                    <div style={{ display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginTop: '32px', marginLeft: '32px' }}>
+
+                        <div style={{ width: '62px', height: "22px", marginTop: '21px', marginLeft: '40px' }}>
+                            <p className='inter-600 ' style={{ width: '62px', height: "22px" }}>Products</p>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', width: "67px", height: '22px', marginTop: '21px', marginLeft: '238px' }}>
+                            <p className='inter-600 ' style={{ width: '51px', height: '22px' }}>Gender </p>
+                            <img src={sortImg} alt="" style={{ width: '8px', height: '10px' }} />
+                        </div>
+                        <div style={{
+                            display: 'flex', alignItems: 'center', width: "67px", height: '22px', marginTop: '21px', marginLeft: '64px'
+                        }}>
+                            <p className='inter-600 ' style={{ width: '64px', height: '22px' }}>Category</p>
+                            <img src={sortImg} alt="" style={{ width: '8px', height: '10px' }} />
+                        </div>
+                        <div style={{
+                            display: 'flex', alignItems: 'center', width: "67px", height: '22px', marginTop: '21px', marginLeft: '83px'
+                        }}>
+                            <p className='inter-600 ' style={{ width: '35px', height: '22px' }}>Price</p>
+                            <img src={sortImg} alt="" style={{ width: '8px', height: '10px' }} />
+                        </div>
+                        <div style={{
+                            display: 'flex', alignItems: 'center', width: "67px", height: '22px', marginTop: '21px', marginLeft: '139px'
+                        }}>
+                            <p className='inter-600 ' style={{ width: '79px', height: '22px' }}>Description</p>
+                            <img src={sortImg} alt="" style={{ width: '8px', height: '10px' }} />
+                        </div>
+                        <div style={{
+                            width: "52px", height: '22px', marginTop: '21px', marginLeft: '141px'
+                        }}>
+                            <p className='inter-600 '>Actions</p>
+                        </div>
                     </div>
                     {currentProducts?.map((item, index) => {
                         return <div key={index} style={{ display: 'flex', width: '1152px', height: '64px', border: '1px solid green', marginLeft: '32px' }}>
