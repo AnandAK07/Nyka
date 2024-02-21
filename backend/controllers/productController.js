@@ -49,7 +49,6 @@ const updateProduct = async (req, res) => {
 }
 
 const deleteProduct = async (req, res) => {
-    const { userId } = req.body;
     const { id } = req.params;
     try {
         const product = await productModel.findByIdAndDelete({ _id: id })
