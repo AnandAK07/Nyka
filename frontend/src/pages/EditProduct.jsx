@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import '../style/edit.css'
 
 export const EditProduct = () => {
   const [formData, setFormData] = useState({

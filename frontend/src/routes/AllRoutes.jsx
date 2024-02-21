@@ -9,6 +9,7 @@ import { useState } from "react"
 import { EditProduct } from "../pages/EditProduct"
 import { LogoutPage } from "../components/LogoutPage"
 import { AddProduct } from "../components/AddProduct"
+import { DetailsPage } from "../pages/DetailsPage"
 
 export const AllRoutes = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +24,7 @@ export const AllRoutes = () => {
             <Route path='/register' element={<Register />} />
             <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="/edit/:id" element={<EditProduct />} />
+            <Route path="/details/:id" element={<DetailsPage/>}/>
             <Route
                 path="/add-product"
                 element={<AddProduct onClose={handleCloseModal} />}
