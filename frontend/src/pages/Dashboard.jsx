@@ -46,10 +46,12 @@ export const Dashboard = () => {
 
 
     const navigate = useNavigate();
+    const { token, isAuth, error, success } = useSelector((store) => store.authReducer)
 
     const handleLogout = () => {
         localStorage.removeItem('e-token');
-        return navigate('/login');
+        // localStorage.clear('e-token');
+        return navigate('/login')
     };
 
     const handleAddProduct = () => {
@@ -155,6 +157,10 @@ export const Dashboard = () => {
     useEffect(() => {
         setCurrentPage(1)
     }, [filterCategory, filterGender, searchTerm])
+
+    if (!isAuth) {
+        return navigate('/login');
+    }
     return (
         <div style={{ background: '#f7f6f9' }}>
             <div style={{

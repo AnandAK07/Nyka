@@ -29,6 +29,8 @@ export const Login = () => {
     return navigate('/dashboard');
   }
 
+
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -66,8 +68,8 @@ export const Login = () => {
                 </label>
                 <div className="text-sm">
                   {/* <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    Forgot password?
-                  </a> */}
+                      Forgot password?
+                    </a> */}
                 </div>
               </div>
               <div className="mt-2">
