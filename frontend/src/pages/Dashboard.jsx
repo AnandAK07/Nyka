@@ -44,8 +44,6 @@ export const Dashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage] = useState(10);
 
-    // const { product, loading, success, error } = useSelector((store) => store.productReducer);
-    // const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -61,10 +59,6 @@ export const Dashboard = () => {
     const getData = async () => {
         try {
             let url = `${process.env.REACT_APP_API_URL}/api/products`;
-            // const url = await getUrl(modifiedUrl, search, filtering, sortingOrder);
-            // const { data } = dispatch(getAllProducts(url));
-            // console.log(data);
-            // dispatch({ type: GET_DATA_LOADING })
             const token = localStorage.getItem('e-token')
             const data = await axios({
                 method: 'get',
@@ -73,8 +67,6 @@ export const Dashboard = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            // dispatch({ type: GET_DATA_SUCCESS, payload: data.data })
-            // return data.data;
             setProducts(data.data)
         } catch (error) {
             console.log(error);
@@ -86,7 +78,17 @@ export const Dashboard = () => {
         const genderMatch = filterGender === '' || product.gender === filterGender;
         const categoryMatch = filterCategory === '' || product.category === filterCategory;
         const searchTermMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-        return genderMatch && categoryMatch && searchTermMatch;
+
+        if (genderMatch === '' && categoryMatch === '') {
+            return searchTermMatch;
+        } else if (genderMatch === '') {
+            return categoryMatch;
+        }
+        else if (categoryMatch === '') {
+            return genderMatch;
+        } else {
+            return genderMatch && categoryMatch && searchTermMatch;
+        }
     });
 
     const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -98,13 +100,10 @@ export const Dashboard = () => {
     });
 
     const handleEdit = (id) => {
-        console.log('edit/', id)
         return navigate(`/edit/${id}`)
     }
 
     const handleDelete = async (id) => {
-        console.log('edit', id)
-
         const token = localStorage.getItem('e-token')
         const res = await axios({
             method: 'delete',
@@ -113,6 +112,7 @@ export const Dashboard = () => {
                 Authorization: `Bearer ${token}`
             }
         })
+        console.log(res);
         getData();
     }
 
@@ -130,28 +130,31 @@ export const Dashboard = () => {
         if (words.length > wordCount) {
             return truncatedDescription + '...';
         }
-
         return truncatedDescription;
     }
 
 
     const handleDetails = (id) => {
-        console.log('edit')
         return navigate(`/details/${id}`)
     }
+
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-    const paginate = pageNumber => setCurrentPage(pageNumber);
+    const totalPages = Math.ceil(products.length / 10);
 
-    // useEffect(() => {
-    //     getData(currentPage, search, filtering, sortingOrder);
-    // }, [currentPage, search, filtering, sortingOrder, dispatch]);
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    };
+
     useEffect(() => {
         getData();
     }, []);
 
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [filterCategory, filterGender, searchTerm])
     return (
         <div style={{ background: '#f7f6f9' }}>
             <div style={{
@@ -192,7 +195,7 @@ export const Dashboard = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '1129px', marginTop: '56.1px', marginLeft: '41px' }}>
                         <div style={{ display: 'flex', background: '#FFFFFF', width: '655px', height: '52px', border: '1px solid #00000033' }}>
                             <img src={searchimg} alt="" style={{ width: '24px', height: '24px', marginTop: '13.9px', marginLeft: '20px' }} />
-                            <input style={{ width: '57px', height: '24px', marginTop: '13.9px', marginLeft: '16px', border: 'none' }} placeholder='Search' />
+                            <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ width: '500px', height: '24px', marginTop: '13.9px', marginLeft: '16px', border: 'none' }} placeholder='Search' />
                         </div>
 
                         <div style={{ display: 'flex', gap: '20px', background: '#FFFFFF', width: '124px', height: '52px' }}>
@@ -285,7 +288,7 @@ export const Dashboard = () => {
                                 {/* <div style={{ display: 'flex', flexDirection: 'row', width: '366px' }}>
                             </div> */}
                                 <div style={{ width: '366px', height: '61px', marginLeft: '77px', marginTop: '8px' }}>
-                                    <p style={{ textAlign: 'justify', color: '#555F7E', width: '250px' }}>{truncateDescription(item.description, 5)}</p>
+                                    <p style={{ textAlign: 'justify', color: '#555F7E', width: '250px' }}>{`Name : ${item.name} ,` + `Description : ` + truncateDescription(item.description, 5)}</p>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: "center", width: '80px', height: '16px', marginLeft: '-96px', marginTop: '24px', gap: '16px' }}>
                                     <img src={editImg} alt="" style={{ width: '16px' }} onClick={() => handleEdit(item._id)} />
@@ -298,16 +301,16 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div style={{ display: 'flex', marginTop: '14px', paddingBottom: '14px' }}>
-                <button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', background: '#919EAB', borderRadius: '4px', marginLeft: '1318px', border: '1px solid #919EAB' }}>
+                <button disabled={currentPage === 1} onClick={() => paginate(currentPage - 1)} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', background: '#919EAB', borderRadius: '4px', marginLeft: '1318px', border: '1px solid #919EAB' }}>
                     <img src={lessthen} alt="" />
                 </button>
-                <button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', borderRadius: '4px', marginLeft: '6px', background: '#ffffff', border: '1px solid #DFE3E8' }}>
-                    1
+                <button onClick={() => paginate(currentPage)} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', borderRadius: '4px', marginLeft: '6px', background: '#ffffff', border: '1px solid #4200FF' }}>
+                    {currentPage}
                 </button>
-                <button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', borderRadius: '4px', marginLeft: '6px', background: '#ffffff', border: '1px solid #DFE3E8' }}>
-                    2
+                <button disabled={totalPages === currentPage} onClick={() => paginate(currentPage + 1)} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', borderRadius: '4px', marginLeft: '6px', background: '#ffffff', border: '1px solid #DFE3E8' }}>
+                    {currentPage + 1}
                 </button>
-                <button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', borderRadius: '4px', marginLeft: '6px', background: '#ffffff', border: '1px solid #DFE3E8' }}>
+                <button disabled={totalPages === currentPage} onClick={() => paginate(currentPage + 1)} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', borderRadius: '4px', marginLeft: '6px', background: '#ffffff', border: '1px solid #DFE3E8' }}>
                     <img src={greaterthen} alt="" />
                 </button>
             </div>
