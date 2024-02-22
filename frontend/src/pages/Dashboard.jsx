@@ -226,8 +226,10 @@ export const Dashboard = () => {
                             </select>
                         </div>
                     </div>
-                    <button onClick={handleAddProduct} style={{ width: '248px', height: '58px', marginLeft: '973px', marginTop: '51.6px', background: '#0E1866', color: '#FFFFFF' }}>
-                        ADD PRODUCT
+                    <button className='inter-800' onClick={handleAddProduct} style={{ width: '248px', height: '58px', marginLeft: '973px', marginTop: '51.6px', background: '#0E1866', color: '#FFFFFF', borderRadius: '4px' }}>
+                        <p style={{ width: '247.75px', height: '25.52px', marginLeft: '0.25px' }}>
+                            ADD PRODUCT
+                        </p>
                     </button>
 
                     <div style={{ background: '#FFFFFF', width: '1216px', height: '830px', border: '1px solid #3326AE14', marginTop: '46px', marginLeft: '33px', borderRadius: '16px' }}>
@@ -296,7 +298,7 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div style={{ display: 'flex', marginTop: '14px', paddingBottom: '14px' }}>
-                <button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', background: '#919EAB', borderRadius: '4px', marginLeft: '1318px', border: '1px solid #DFE3E8' }}>
+                <button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', background: '#919EAB', borderRadius: '4px', marginLeft: '1318px', border: '1px solid #919EAB' }}>
                     <img src={lessthen} alt="" />
                 </button>
                 <button style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '32px', height: '32px', borderRadius: '4px', marginLeft: '6px', background: '#ffffff', border: '1px solid #DFE3E8' }}>

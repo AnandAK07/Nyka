@@ -158,3 +158,15 @@
         color: #8E95A9;
 }
 
+.inter-800 {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+    font-variation-settings:
+        "slnt" 0;
+    color: #8E95A9;
+}
+
